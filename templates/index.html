@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Compression App</title>
+    <title>File Compression App</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -58,7 +58,7 @@
             color: #333;
         }
 
-        img {
+        img, audio, video {
             max-width: 100%;
             height: auto;
             display: block;
@@ -69,20 +69,50 @@
     </style>
 </head>
 <body>
-    <h1>Image Compression App</h1>
+    <h1>File Compression App</h1>
 
     <form action="/compress" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*">
+        <input type="file" name="file" accept="image/*, audio/*, video/*">
         <button type="submit">Compress</button>
     </form>
 
-    {% if original_image %}
-        <h2>Original Image: {{ original_image }}</h2>
-        <img src="{{ url_for('static', filename='uploads/' + original_image) }}" alt="Original Image">
+    {% if original_file %}
+        <h2>Original File: {{ original_file }}</h2>
 
-         {% if compressed_image %}
-            <h2>Compressed Image: {{ compressed_image }}</h2>
-            <img src="{{ url_for('static', filename='uploads/' + compressed_image) }}" alt="Compressed Image">
+        {% if original_file.endswith(('.jpg', '.jpeg', '.png')) %}
+            <img src="{{ url_for('static', filename='uploads/' + original_file) }}" alt="Original Image">
+
+        {% elif original_file.endswith(('.mp3', '.wav')) %}
+            <audio controls>
+                <source src="{{ url_for('static', filename='uploads/' + original_file) }}" type="audio/mpeg">
+                Your browser does not support the audio tag.
+            </audio>
+
+        {% elif original_file.endswith(('.mp4', '.webm', '.ogg')) %}
+            <video controls>
+                <source src="{{ url_for('static', filename='uploads/' + original_file) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        {% endif %}
+
+         {% if compressed_file %}
+            <h2>Compressed File: {{ compressed_file }}</h2>
+
+            {% if compressed_file.endswith(('.jpg', '.jpeg', '.png')) %}
+                <img src="{{ url_for('static', filename='uploads/' + compressed_file) }}" alt="Compressed Image">
+
+            {% elif compressed_file.endswith(('.mp3', '.wav')) %}
+                <audio controls>
+                    <source src="{{ url_for('static', filename='uploads/' + compressed_file) }}" type="audio/mpeg">
+                    Your browser does not support the audio tag.
+                </audio>
+
+            {% elif compressed_file.endswith(('.mp4', '.webm', '.ogg')) %}
+                <video controls>
+                    <source src="{{ url_for('static', filename='uploads/' + compressed_file) }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            {% endif %}
 
             {% if compression_ratio is not none %}
                 <h2>Compression Ratio: {{ compression_ratio | round(2) }}%</h2>

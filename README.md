@@ -1,6 +1,6 @@
 Mini-Projet
 
-Project Description
+Project Description :
 
 A multimedia compression application that allows users to compress audio, video, and image files efficiently.
 

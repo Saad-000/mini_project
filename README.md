@@ -20,3 +20,6 @@ git clone https://github.com/Saad-000/mini_project
 
 # Change to the project directory
 cd your-project
+
+'''
+RUN the app.py script to lunch the app
